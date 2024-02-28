@@ -1,32 +1,36 @@
 // https://leetcode.com/problems/valid-parentheses/description/
 
+// Bài toán này được xét vào Easy, nhưng đối với mình nó khó vl, và nhiều người khác cũng vậy
+
 // Ý tưởng:
-// 1 - Tổng độ dài phải là 1 số chẵn
-// 2 - Các cặp 2 chữ 1 phải cùng loại (), [], {}, định danh cặp số là 1 số âm, 1 số dương, khi cộng lại bằng 0 là được đỡ phải so sánh từng ký tự
+// Lặp từng kí tự, nếu gặp kí tự mở thì push 1 kí tự đóng
+// Ngược lại nếu gặp kí tự đóng thì pop ra, nếu giá trị pop ra khác giá trị hiện tại thì là không hợp lệ
+// Thỏa mãn khi quá trình này mảng trở về rỗng
 
-const aphabet = {
-    '(': -1,
-    ')': 1,
-    '[': -2,
-    ']': 2,
-    '{': -3,
-    '}': 3
-}
+// Eg: {[]()}
+// Push: }]
+// Pop : ] == ] -> đúng, arr còn lại }
+// Push: )      -> arr : })
+// Pop : ) == ) -> đúng , arr: }
+// Pop : }  --> arr rỗng
 
-/**
- * @param {string} s
- * @return {boolean}
- */
-var isValid = function (s) {
-    if (s.length % 2 != 0)
-        return false;
+var isValid = function(s) {
+    let arrCharaters = []
 
-    for (let i = 0; i < s.length; i++){
-        
+    if(s.length <= 1) {
+        return false
+    } else {
+        for(let char = 0; char < s.length; char++){
+            if(s[char] == '{') {
+                arrCharaters.push('}')
+            } else if (s[char] == '[') {
+                arrCharaters.push(']')
+            } else if (s[char] == '(') {
+                arrCharaters.push(')')
+            } else if (arrCharaters.pop() !== s[char]) {
+                return false
+            }
+        }
+            return !arrCharaters.length
     }
-    
-    return true;
 };
-
-
-console.log(isValid('{[]}'));
